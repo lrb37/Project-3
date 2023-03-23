@@ -11,7 +11,7 @@ and the mutation rate.
 
 ***************************************************************/
 
-#include <iostream>
+/*#include <iostream>
 #include <string>
 #include <vector>
 #include "TSP.hpp"
@@ -57,4 +57,57 @@ int main() {
     std::cout << "Cost: " << gaCost << std::endl;
 
     return 0;
+}
+*/ #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <chrono>
+#include "TSP.hpp"
+
+int main() {
+    // Read distances from file
+    std::vector<std::vector<double>> distances(20, std::vector<double>(20));
+    readDistances("distances.txt", distances);
+
+    // Create spreadsheet
+    std::cout << "Number of Cities\tPopulation Size\tNumber of Generations\tMutation Rate\tBrute Force Time (s)\tGA Time (s)\tBrute Force Cost\tGA Cost\tGA Cost Percentage of Optimal" << std::endl;
+
+    // Run TSP solver for different values of parameters
+    for (int numCities = 10; ; numCities++) {
+        if (bruteForce(distances, numCities).size() == 0) {
+            break;
+        }
+        for (int populationSize = 10; populationSize <= numCities; populationSize += 10) {
+            for (int numGenerations = 10; numGenerations <= 100; numGenerations += 10) {
+                for (double mutationRate = 0.1; mutationRate <= 0.5; mutationRate += 0.1) {
+                    // Solve TSP using brute force
+                    std::vector<int> bfPath;
+                    double bfCost;
+                    auto bfStart = std::chrono::steady_clock::now();
+                    bfPath = bruteForce(distances, numCities);
+                    bfCost = calculateCost(bfPath, distances);
+                    auto bfEnd = std::chrono::steady_clock::now();
+                    double bfTime = std::chrono::duration<double>(bfEnd - bfStart).count();
+
+                    // Solve TSP using genetic algorithm
+                    std::vector<int> gaPath;
+                    double gaCost;
+                    auto gaStart = std::chrono::steady_clock::now();
+                    gaPath = geneticAlgorithm(distances, numCities, populationSize, numGenerations, mutationRate);
+                    gaCost = calculateCost(gaPath, distances);
+                    auto gaEnd = std::chrono::steady_clock::now();
+                    double gaTime = std::chrono::duration<double>(gaEnd - gaStart).count();
+
+                    // Calculate GA cost percentage of optimal
+                    double gaCostPercentage = (bfCost == 0) ? 0 : (gaCost / bfCost) * 100;
+
+                    // Output results to spreadsheet
+                    std::cout << numCities << "\t" << populationSize << "\t" << numGenerations << "\t" << mutationRate << "\t" << bfTime << "\t" << gaTime << "\t" << bfCost << "\t" << gaCost << "\t" << gaCostPercentage << std::endl;
+}
+}
+}
+}
+return 0;
 }
