@@ -12,7 +12,6 @@
 #include <limits>
 
 void readDistances(const std::string& filename, std::vector<std::vector<double>>& distances);
-
 double calculateCost(const std::vector<int>& path, const std::vector<std::vector<double>>& distances);
 
 std::vector<int> bruteForce(const std::vector<std::vector<double>>& distances, const int& numCities);
