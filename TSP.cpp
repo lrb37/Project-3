@@ -1,21 +1,26 @@
 #include "TSP.hpp"
 #include <algorithm>
+#include <random>
+
 
 void readDistances(const std::string& filename, std::vector<std::vector<double>>& distances)
 {
     std::ifstream inputFile(filename);
-    if (!inputFile)
+    int numCities;
+
+    if (inputFile.is_open())
     {
-        std::cerr << "Unable to open file " << filename << std::endl;
-        exit(1);
-    }
-     distances.resize(numCities, std::vector<double>(numCities));
-    for (std::vector<double>& row : distances)
-    {
-        for (double& distance : row)
+        inputFile >> numCities;
+        distances.resize(numCities, std::vector<double>(numCities));
+
+        for (int i = 0; i < numCities; i++)
         {
-            inputFile >> distance;
+            for (int j = 0; j < numCities; j++)
+            {
+                inputFile >> distances[i][j];
+            }
         }
+        inputFile.close();
     }
 }
 
@@ -55,15 +60,15 @@ std::vector<int> bruteForce(const std::vector<std::vector<double>>& distances, c
 std::vector<int> geneticAlgorithm(const std::vector<std::vector<double>>& distances, const int& numCities, const int& populationSize, const int& numGenerations, const double& mutationRate)
 {
     std::vector<std::vector<int>> population(populationSize, std::vector<int>(numCities));
-    for (std::vector<int>& individual : population)
-    {
-        std::iota(individual.begin(), individual.end(), 0);
-        std::random_shuffle(individual.begin() + 1, individual.end());
-         for (auto& individual : population) {
-    individual = initialIndividual;
-    std::shuffle(individual.begin() + 1, individual.end(), std::mt19937{std::random_device{}()});
-}
+    std::vector<int> path(numCities);
+    std::iota(path.begin(), path.end(), 0);
+    std::vector<int> initialIndividual = path;
+
+    for (auto& individual : population) {
+        individual = initialIndividual;
+        std::shuffle(individual.begin() + 1, individual.end(), std::mt19937{std::random_device{}()});
     }
+
     for (int generation = 0; generation < numGenerations; generation++)
     {
         std::vector<std::pair<double, int>> fitnessScores(populationSize);
