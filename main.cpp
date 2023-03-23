@@ -11,9 +11,10 @@ and the mutation rate.
 
 ***************************************************************/
 
-/*#include <iostream>
+#include <iostream>
 #include <string>
 #include <vector>
+#include <chrono>
 #include "TSP.hpp"
 
 int main() {
@@ -34,80 +35,36 @@ int main() {
     std::cin >> mutationRate;
 
     // Solve TSP using brute force
+    auto start_bf = std::chrono::high_resolution_clock::now();
     std::vector<int> bfPath = bruteForce(distances, numCities);
     double bfCost = calculateCost(bfPath, distances);
+    auto end_bf = std::chrono::high_resolution_clock::now();
+    auto time_bf = std::chrono::duration_cast<std::chrono::microseconds>(end_bf - start_bf);
 
     // Solve TSP using genetic algorithm
+    auto start_ga = std::chrono::high_resolution_clock::now();
     std::vector<int> gaPath = geneticAlgorithm(distances, numCities, populationSize, numGenerations, mutationRate);
     double gaCost = calculateCost(gaPath, distances);
+    auto end_ga = std::chrono::high_resolution_clock::now();
+    auto time_ga = std::chrono::duration_cast<std::chrono::microseconds>(end_ga - start_ga);
 
     // Print results
-    std::cout << "Brute force solution:" << std::endl;
+    std::cout << "Number of cities: " << numCities << std::endl;
+
     for (int i = 0; i < bfPath.size(); i++) {
-        std::cout << bfPath[i] << " ";
     }
     std::cout << std::endl;
-    std::cout << "Cost: " << bfCost << std::endl;
+    std::cout << "Optimal cost: " << bfCost << std::endl;
+    std::cout << "Time taken by brute force: " << time_bf.count() << " microseconds" << std::endl;
 
-    std::cout << "Genetic algorithm solution:" << std::endl;
     for (int i = 0; i < gaPath.size(); i++) {
-        std::cout << gaPath[i] << " ";
     }
     std::cout << std::endl;
     std::cout << "Cost: " << gaCost << std::endl;
+    std::cout << "Time taken by genetic algorithm: " << time_ga.count() << " microseconds" << std::endl;
+
+    double percent = 100.0 * gaCost / bfCost;
+    std::cout << "Percentage of optimal that genetic algorithm produced: " << percent << "%" << std::endl;
 
     return 0;
-}
-*/ #include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <chrono>
-#include "TSP.hpp"
-
-int main() {
-    // Read distances from file
-    std::vector<std::vector<double>> distances(20, std::vector<double>(20));
-    readDistances("distances.txt", distances);
-
-    // Create spreadsheet
-    std::cout << "Number of Cities\tPopulation Size\tNumber of Generations\tMutation Rate\tBrute Force Time (s)\tGA Time (s)\tBrute Force Cost\tGA Cost\tGA Cost Percentage of Optimal" << std::endl;
-
-    // Run TSP solver for different values of parameters
-    for (int numCities = 10; ; numCities++) {
-        if (bruteForce(distances, numCities).size() == 0) {
-            break;
-        }
-        for (int populationSize = 10; populationSize <= numCities; populationSize += 10) {
-            for (int numGenerations = 10; numGenerations <= 100; numGenerations += 10) {
-                for (double mutationRate = 0.1; mutationRate <= 0.5; mutationRate += 0.1) {
-                    // Solve TSP using brute force
-                    std::vector<int> bfPath;
-                    double bfCost;
-                    auto bfStart = std::chrono::steady_clock::now();
-                    bfPath = bruteForce(distances, numCities);
-                    bfCost = calculateCost(bfPath, distances);
-                    auto bfEnd = std::chrono::steady_clock::now();
-                    double bfTime = std::chrono::duration<double>(bfEnd - bfStart).count();
-
-                    // Solve TSP using genetic algorithm
-                    std::vector<int> gaPath;
-                    double gaCost;
-                    auto gaStart = std::chrono::steady_clock::now();
-                    gaPath = geneticAlgorithm(distances, numCities, populationSize, numGenerations, mutationRate);
-                    gaCost = calculateCost(gaPath, distances);
-                    auto gaEnd = std::chrono::steady_clock::now();
-                    double gaTime = std::chrono::duration<double>(gaEnd - gaStart).count();
-
-                    // Calculate GA cost percentage of optimal
-                    double gaCostPercentage = (bfCost == 0) ? 0 : (gaCost / bfCost) * 100;
-
-                    // Output results to spreadsheet
-                    std::cout << numCities << "\t" << populationSize << "\t" << numGenerations << "\t" << mutationRate << "\t" << bfTime << "\t" << gaTime << "\t" << bfCost << "\t" << gaCost << "\t" << gaCostPercentage << std::endl;
-}
-}
-}
-}
-return 0;
 }
