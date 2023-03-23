@@ -1,18 +1,17 @@
-CXX = g++
-CXXFLAGS = -Wall -std=c++11
-SRCS = main.cpp TSP.cpp
-OBJS = $(SRCS:.cpp=.o)
-MAIN = tsp
+CC=g++
+CFLAGS=-c -Wall
+LDFLAGS=
+SOURCES=main.cpp TSP.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+EXECUTABLE=tsp
 
-.PHONY: clean
+all: $(SOURCES) $(EXECUTABLE)
 
-all: $(MAIN)
-
-$(MAIN): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $(MAIN)
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
 .cpp.o:
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 
 clean:
-	$(RM) $(OBJS) $(MAIN)
+	rm -rf $(OBJECTS) $(EXECUTABLE)
