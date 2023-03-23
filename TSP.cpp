@@ -1,3 +1,11 @@
+/***************************************************************
+Student Name: Logan Belew
+File Name: TSP.cpp
+Assignment number 3
+
+This file contains the implementation of two algorithms to solve the traveling salesman problem: brute force and genetic algorithm.
+***************************************************************/
+
 #include "TSP.hpp"
 #include <algorithm>
 #include <random>
