@@ -1,3 +1,16 @@
+/***************************************************************
+Student Name: Logan Belew
+File Name: main.cpp
+Assignment number 3
+
+This program reads distances between cities from a file and solves
+the traveling salesman problem using brute force and genetic algorithm.
+It prompts the user to enter the number of cities to run, the number
+of individual tours in a population, the number of generations to run,
+and the mutation rate.
+
+***************************************************************/
+
 #include <iostream>
 #include <string>
 #include <vector>
