@@ -1,3 +1,14 @@
+/***************************************************************
+Student Name: Logan Belew
+File Name: tsp.hpp
+Assignment number 3
+
+Header file for TSP functions, including reading distances from file,
+calculating the cost of a path, and implementing the brute force and
+genetic algorithm approaches to the Traveling Salesman Problem.
+
+***************************************************************/
+
 #ifndef TSP_HPP
 #define TSP_HPP
 
