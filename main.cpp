@@ -1,44 +1,46 @@
 #include <iostream>
-#include <chrono>
+#include <string>
+#include <vector>
 #include "TSP.hpp"
 
-int main(int argc, char* argv[])
-{
-    if (argc < 2)
-    {
-        std::cerr << "Usage: " << argv[0] << " [filename]" << std::endl;
-        return 1;
-    }
-    std::string filename = argv[1];
-    std::vector<std::vector<double>> distances;
-    readDistances(filename, distances);
-    int numCities = distances.size();
+int main() {
+    // Read distances from file
+    std::vector<std::vector<double>> distances(20, std::vector<double>(20));
+    readDistances("distances.txt", distances);
 
-    auto start = std::chrono::high_resolution_clock::now();
-    std::vector<int> bfPath = bruteForce(distances, numCities);
-    auto bfEnd = std::chrono::high_resolution_clock::now();
+    // Get user input
+    int numCities, populationSize, numGenerations;
+    double mutationRate;
+    std::cout << "Enter the number of cities to run: ";
+    std::cin >> numCities;
+    std::cout << "Enter the number of individual tours in a population: ";
+std::cin >> populationSize;
+std::cout << "Enter the number of generations to run: ";
+std::cin >> numGenerations;
+std::cout << "Enter the mutation rate: ";
+std::cin >> mutationRate;
+// Solve TSP using brute force
+std::vector<int> bfPath = bruteForce(distances, numCities);
+double bfCost = calculateCost(bfPath, distances);
 
-    auto gaStart = std::chrono::high_resolution_clock::now();
-    std::vector<int> gaPath = geneticAlgorithm(distances, numCities, 100, 1000, 0.01);
-    auto gaEnd = std::chrono::high_resolution_clock::now();
+// Solve TSP using genetic algorithm
+std::vector<int> gaPath = geneticAlgorithm(distances, numCities, populationSize, numGenerations, mutationRate);
+double gaCost = calculateCost(gaPath, distances);
 
-    std::cout << "Brute force path: ";
-    for (std::vector<int>::size_type i = 0; i < bfPath.size(); i++)
-    {
-        std::cout << bfPath[i] << " ";
-    }
-    std::cout << std::endl;
-    std::cout << "Brute force cost: " << calculateCost(bfPath, distances) << std::endl;
-    std::cout << "Brute force time: " << std::chrono::duration_cast<std::chrono::milliseconds>(bfEnd - start).count() << " ms" << std::endl;
+// Print results
+std::cout << "Brute force solution:" << std::endl;
+for (int i = 0; i < bfPath.size(); i++) {
+    std::cout << bfPath[i] << " ";
+}
+std::cout << std::endl;
+std::cout << "Cost: " << bfCost << std::endl;
 
-    std::cout << "Genetic algorithm path: ";
-    for (std::vector<int>::size_type i = 0; i < gaPath.size(); i++)
-    {
-        std::cout << gaPath[i] << " ";
-    }
-    std::cout << std::endl;
-    std::cout << "Genetic algorithm cost: " << calculateCost(gaPath, distances) << std::endl;
-    std::cout << "Genetic algorithm time: " << std::chrono::duration_cast<std::chrono::milliseconds>(gaEnd - gaStart).count() << " ms" << std::endl;
+std::cout << "Genetic algorithm solution:" << std::endl;
+for (int i = 0; i < gaPath.size(); i++) {
+    std::cout << gaPath[i] << " ";
+}
+std::cout << std::endl;
+std::cout << "Cost: " << gaCost << std::endl;
 
-    return 0;
+return 0;
 }
