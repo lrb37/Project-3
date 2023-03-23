@@ -1,16 +1,18 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -Wpedantic
+CXXFLAGS = -Wall -std=c++11
+SRCS = main.cpp TSP.cpp
+OBJS = $(SRCS:.cpp=.o)
+MAIN = tsp
 
-all: tsp
+.PHONY: clean
 
-tsp: main.o tsp.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
+all: $(MAIN)
 
-main.o: main.cpp tsp.hpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(MAIN): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(MAIN)
 
-tsp.o: tsp.cpp tsp.hpp
+.cpp.o:
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o tsp
+	$(RM) $(OBJS) $(MAIN)
