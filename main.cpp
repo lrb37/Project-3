@@ -14,33 +14,34 @@ int main() {
     std::cout << "Enter the number of cities to run: ";
     std::cin >> numCities;
     std::cout << "Enter the number of individual tours in a population: ";
-std::cin >> populationSize;
-std::cout << "Enter the number of generations to run: ";
-std::cin >> numGenerations;
-std::cout << "Enter the mutation rate: ";
-std::cin >> mutationRate;
-// Solve TSP using brute force
-std::vector<int> bfPath = bruteForce(distances, numCities);
-double bfCost = calculateCost(bfPath, distances);
+    std::cin >> populationSize;
+    std::cout << "Enter the number of generations to run: ";
+    std::cin >> numGenerations;
+    std::cout << "Enter the mutation rate: ";
+    std::cin >> mutationRate;
 
-// Solve TSP using genetic algorithm
-std::vector<int> gaPath = geneticAlgorithm(distances, numCities, populationSize, numGenerations, mutationRate);
-double gaCost = calculateCost(gaPath, distances);
+    // Solve TSP using brute force
+    std::vector<int> bfPath = bruteForce(distances, numCities);
+    double bfCost = calculateCost(bfPath, distances);
 
-// Print results
-std::cout << "Brute force solution:" << std::endl;
-for (int i = 0; i < bfPath.size(); i++) {
-    std::cout << bfPath[i] << " ";
-}
-std::cout << std::endl;
-std::cout << "Cost: " << bfCost << std::endl;
+    // Solve TSP using genetic algorithm
+    std::vector<int> gaPath = geneticAlgorithm(distances, numCities, populationSize, numGenerations, mutationRate);
+    double gaCost = calculateCost(gaPath, distances);
 
-std::cout << "Genetic algorithm solution:" << std::endl;
-for (int i = 0; i < gaPath.size(); i++) {
-    std::cout << gaPath[i] << " ";
-}
-std::cout << std::endl;
-std::cout << "Cost: " << gaCost << std::endl;
+    // Print results
+    std::cout << "Brute force solution:" << std::endl;
+    for (int i = 0; i < bfPath.size(); i++) {
+        std::cout << bfPath[i] << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "Cost: " << bfCost << std::endl;
 
-return 0;
+    std::cout << "Genetic algorithm solution:" << std::endl;
+    for (int i = 0; i < gaPath.size(); i++) {
+        std::cout << gaPath[i] << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "Cost: " << gaCost << std::endl;
+
+    return 0;
 }
