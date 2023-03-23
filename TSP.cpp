@@ -9,6 +9,7 @@ void readDistances(const std::string& filename, std::vector<std::vector<double>>
         std::cerr << "Unable to open file " << filename << std::endl;
         exit(1);
     }
+     distances.resize(numCities, std::vector<double>(numCities));
     for (std::vector<double>& row : distances)
     {
         for (double& distance : row)
