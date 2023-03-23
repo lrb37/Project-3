@@ -1,0 +1,13 @@
+User Manual: Running and Entering Information for TSP Problem
+
+This program solves the Traveling Salesman Problem (TSP) using brute force and a genetic algorithm. To use the program, follow these instructions:
+
+  Compile the Program
+The program consists of three files: main.cpp, TSP.hpp, and TSP.cpp. You need to compile these files into an executable file using the make command.
+
+     To run the program type ./tsp in the console:
+  The program will prompt you to enter four pieces of information:
+The number of cities to run: Enter an integer that represents the number of cities in your distances file.
+The number of individual tours in a population: Enter an integer that represents the number of individual tours in a population. The larger the population, the longer it takes to run the genetic algorithm.
+The number of generations to run: Enter an integer that represents the number of generations to run the genetic algorithm. The larger the number of generations, the better the solution, but the longer it takes to run.
+The mutation rate: Enter a floating-point number between 0 and 1 that represents the mutation rate of the genetic algorithm. A higher mutation rate allows for more exploration of the search space, but it may also lead to a longer runtime.
