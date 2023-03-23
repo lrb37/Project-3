@@ -59,6 +59,10 @@ std::vector<int> geneticAlgorithm(const std::vector<std::vector<double>>& distan
     {
         std::iota(individual.begin(), individual.end(), 0);
         std::random_shuffle(individual.begin() + 1, individual.end());
+         for (auto& individual : population) {
+    individual = initialIndividual;
+    std::shuffle(individual.begin() + 1, individual.end(), std::mt19937{std::random_device{}()});
+}
     }
     for (int generation = 0; generation < numGenerations; generation++)
     {
